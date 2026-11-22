@@ -22,7 +22,7 @@ detector (`src/backend/distributed/transaction/distributed_deadlock_detection.c`
 ## Run it
 
 ```sh
-./run.sh
+sh run.sh
 ```
 
 Expected output: 9 tests pass, then the two-transfer simulation finds the
