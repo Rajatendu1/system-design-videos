@@ -35,7 +35,7 @@ public final class Simulation {
             return;
         }
 
-        List<TransactionId> cycle = cycles.get(0);
+        List<TransactionId> cycle = detector.findCycle(t1).orElseThrow();
         System.out.println("Distributed deadlock found:");
         for (int i = 0; i < cycle.size(); i++) {
             System.out.println("  " + (i + 1) + ". " + cycle.get(i));
