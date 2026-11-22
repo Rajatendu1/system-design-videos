@@ -21,7 +21,7 @@ public final class Simulation {
         Node nodeB = new Node(2);
 
         TransactionId t1 = new TransactionId(1, 1000L, 1); // started on node A, older
-        TransactionId t2 = new TransactionId(2, 1005L, 2); // started on node B, younger
+        TransactionId t2 = new TransactionId(1, 1005L, 2); // same initiator as T1, younger; locks span both workers
 
         nodeA.addWait(t2, t1, "hello"); // T2 wants 'hello', held by T1 on node A
         nodeB.addWait(t1, t2, "world"); // T1 wants 'world', held by T2 on node B
