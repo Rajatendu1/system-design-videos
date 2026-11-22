@@ -5,18 +5,12 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Chooses which transaction on a deadlock cycle gets cancelled.
- *
- * Mirrors Citus's policy: cancel the youngest transaction in the cycle. The
- * code comments in Citus give the reason: predictable results, and a young
- * transaction has usually done the least work, so it is the cheapest to
- * redo. Ties on the timestamp are broken by the full id ordering, so the
- * same graph always yields the same victim.
- *
- * Before cancelling, the victim must still map to a live backend process.
- * This is a "victim still exists" check, not a revalidation of the whole
- * cycle: the graph came from a stitched snapshot, and the cycle may have
- * partly resolved while it was being assembled.
+ * Pick the youngest cycle participant in the supplied eligible-live set.
+ * This set stands in for Citus's local backend association checks; callers
+ * modelling one detector should include only locally eligible initiators.
+ * Citus does not promise the globally youngest victim. Our total ID ordering
+ * on equal timestamps is an explicit addition to its timestamp comparison.
+ * Presence in this set is not revalidation of the collected cycle.
  */
 public final class VictimPicker {
 
