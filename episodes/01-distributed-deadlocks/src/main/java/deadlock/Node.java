@@ -5,12 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * One database node (a shard server) with its own local lock table.
- *
- * A node only ever sees the waits that involve locks living on it. Neither
- * the cross-node cycle nor the other node's waits are visible here, which is
- * exactly why a purely local detector can never fire on a distributed
- * deadlock.
+ * A teaching model of one worker's local wait edges. The two-transfer
+ * example splits its cycle across workers, so neither fragment shows that
+ * cycle. This is not a full database lock table or lock manager.
  */
 public final class Node {
 
