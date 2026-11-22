@@ -9,15 +9,11 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * The depth-first search at the heart of the episode.
- *
- * Mirrors Citus's CheckDeadlockForTransactionNode: an iterative DFS with an
- * explicit stack (never recursion, so a deep graph cannot blow the call
- * stack), starting from one transaction and asking a single question:
- * can I reach myself again?
- *
- * A path that loops back to the starting transaction is a deadlock cycle.
- * The returned path lists the transactions on the cycle in order.
+ * Teaching version of the iterative DFS used by Citus's
+ * CheckDeadlockForTransactionNode. Work items carry a depth and the search
+ * records a path back to its root. The Java collections and return format
+ * are our own. A cycle represents deadlock under this simulator's fixed,
+ * exclusive-lock model, not every rule of a production lock manager.
  */
 public final class DeadlockDetector {
 
@@ -77,10 +73,9 @@ public final class DeadlockDetector {
     }
 
     /**
-     * Run the search for every transaction started on the local node, the
-     * same initiator filter Citus applies: the node that started a
-     * transaction owns the search for its deadlocks, so a cluster-wide
-     * cycle is reported by exactly one node.
+     * Search from transactions whose initiator is the supplied local node,
+     * matching Citus's root filter. This does not deduplicate cycles or
+     * guarantee that exactly one node can report a cluster-wide cycle.
      */
     public List<List<TransactionId>> findCyclesInitiatedAt(int localNodeId) {
         List<List<TransactionId>> cycles = new ArrayList<>();
