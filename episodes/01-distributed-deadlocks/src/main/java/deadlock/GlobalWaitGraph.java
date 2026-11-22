@@ -49,9 +49,10 @@ public final class GlobalWaitGraph {
     }
 
     /**
-     * Upper bound on search depth. Only transactions that wait or are waited
-     * upon appear in the graph, so no path visits more than edgeCount + 1
-     * nodes. Citus uses the same bound for its stack.
+     * Search-depth guard based on Citus's edgeCount + 1 path-array allocation.
+     * Visited-node handling bounds expansion in this DFS. This is not a claim
+     * that every arbitrary walk, or the graph's total vertex count across
+     * disconnected components, is bounded by edgeCount + 1.
      */
     public int maxSearchDepth() {
         return edgeCount + 1;
