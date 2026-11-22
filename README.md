@@ -2,7 +2,7 @@
 
 Runnable code from the videos on [youtube.com/@rajatendudey](https://www.youtube.com/@rajatendudey).
 
-Every episode ships working code with tests, not pseudocode: clone, compile, run, and watch the same search that production databases execute.
+Each episode pairs runnable teaching code and tests with a source-grounded walkthrough of a real system. The simulator is not a database implementation.
 
 ## Episodes
 
@@ -16,7 +16,7 @@ Each episode is zero-dependency. All you need is a JDK (11 or later):
 
 ```sh
 cd episodes/01-distributed-deadlocks
-./run.sh        # compiles, runs the tests, then the end-to-end simulation
+sh run.sh        # compiles, runs the tests, then the end-to-end simulation
 ```
 
 ## License
