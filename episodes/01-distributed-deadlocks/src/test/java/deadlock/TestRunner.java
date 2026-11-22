@@ -87,11 +87,7 @@ public final class TestRunner {
                 cycle.isPresent() && cycle.get().size() == 4 && cycle.get().contains(t3));
     }
 
-    /**
-     * A cycle among transactions started on other nodes is ignored, matching
-     * Citus's initiator filter: the node that started a transaction owns its
-     * detection.
-     */
+    /** Foreign-initiator transactions do not supply roots for this node. */
     static void foreignCycleSkippedByInitiatorFilter() {
         Node nodeA = new Node(1);
         Node nodeB = new Node(2);
@@ -150,10 +146,7 @@ public final class TestRunner {
         check("two independent cycles found", detector.findCyclesInitiatedAt(1).size() == 2);
     }
 
-    /**
-     * A one-node cycle cannot crash the search. Citus's own code comments
-     * allow for a single-transaction self-deadlock case.
-     */
+    /** A synthetic self-loop is an algorithm robustness test only. */
     static void selfCycleDoesNotCrashTheSearch() {
         Node node = new Node(1);
         TransactionId t1 = new TransactionId(1, 1000L, 1);
@@ -193,4 +186,4 @@ public final class TestRunner {
             System.out.println("FAIL  " + name);
         }
     }
-}
+    }
